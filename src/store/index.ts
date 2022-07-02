@@ -6,5 +6,7 @@ export const useStore = create((set: SetState<any>, get: GetState<any>) => ({
 }));
 
 export * from './transaction';
+export * from './doctor';
+export * from './appointment';
 
 export default useStore;

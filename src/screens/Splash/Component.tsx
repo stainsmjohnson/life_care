@@ -1,13 +1,14 @@
 import React from 'react';
-import AnimatedLottieView from 'lottie-react-native';
+import { Center, Heading } from 'native-base';
+import { SafeAreaView } from 'react-native';
 
 const Splash = () => {
   return (
-    <AnimatedLottieView
-      source={require('assets/animation/anim4.json')}
-      autoPlay
-      loop
-    />
+    <SafeAreaView style={{ flex: 1 }}>
+      <Center flex={1}>
+        <Heading>Life Care</Heading>
+      </Center>
+    </SafeAreaView>
   );
 };
 

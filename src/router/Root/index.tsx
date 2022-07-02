@@ -7,7 +7,7 @@ import Drawer from '@router/Drawer';
 //screens
 import SignIn from '@screens/SignIn';
 import OnBoarding from '@screens/OnBoarding';
-import Codepush from '@modals/Codepush';
+import NewAppt from '@modals/NewAppt';
 import { Navigators, Screens } from 'config/constants';
 import { StyleSheet } from 'react-native';
 import { Colors } from '@theme';
@@ -35,13 +35,14 @@ const RootStack = () => {
         <Stack.Screen name={Navigators.Drawer} component={Drawer} />
       )}
       <Stack.Screen name={Screens.OnBoarding} component={OnBoarding} />
-      {/* <Stack.Group
+      <Stack.Group
         screenOptions={{
           presentation: 'transparentModal',
           animation: 'fade_from_bottom',
           contentStyle: styles.modelContainer,
         }}>
-      </Stack.Group> */}
+        <Stack.Screen name={Screens.NewAppot} component={NewAppt} />
+      </Stack.Group>
     </Stack.Navigator>
   );
 };

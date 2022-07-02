@@ -7,12 +7,19 @@ export const Navigators = {
   Drawer: 'Drawer',
 };
 
-export const Screens = {
-  Splash: 'Splash',
-  SignIn: 'SignIn',
-  OnBoarding: 'OnBoarding',
-  Register: 'Register',
-};
+export enum Screens {
+  Splash = 'Splash',
+  SignIn = 'SignIn',
+  OnBoarding = 'OnBoarding',
+  Register = 'Register',
+  NewAppot = 'NewAppt',
+}
+
+export enum Collections {
+  Appointment = 'Appointment',
+  Hospitals = 'Hospitals',
+  Users = 'Users',
+}
 
 export const API_URL = Config.API_URL;
 

@@ -38,7 +38,7 @@ const ProfileCard = () => {
       </Animated.View>
 
       <View style={{ width: '100%', height: 100 }} />
-      <Text>{user?.displayName}</Text>
+      <Text>{user?.name}</Text>
       <Text>{user?.email}</Text>
       <Text>{user?.phoneNumber}</Text>
     </View>

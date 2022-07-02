@@ -40,14 +40,24 @@ const authSlice: StoreSlice<AuthState, AuthActions> = (set, get) => ({
 
       console.log('###', userDetails.exists, userDetails.data());
 
+      const userBasicDetails = {
+        photoURL: user.user.photoURL,
+        phoneNumber: user.user.phoneNumber,
+        id: user.user.uid,
+      };
+
       if (!userDetails.exists) {
         const isNewUser = true;
-        set({ user: user.user, initilizing: true });
+        set({ user: { ...user.user, ...userBasicDetails }, initilizing: true });
         return isNewUser;
       } else {
         set({
           initilizing: false,
-          user: { ...user.user, ...userDetails.data() },
+          user: {
+            ...user.user,
+            ...userBasicDetails,
+            ...userDetails.data(),
+          },
         });
       }
     } catch (err: any) {
@@ -71,6 +81,7 @@ const authSlice: StoreSlice<AuthState, AuthActions> = (set, get) => ({
         isDoctor,
         hospital,
         rating,
+        id: user?.uid,
       });
       set({ user: { ...user, isDoctor, hospital }, initilizing: false });
     } catch (err) {

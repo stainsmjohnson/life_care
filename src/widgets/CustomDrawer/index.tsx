@@ -40,7 +40,6 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = props => {
       <ProfileCard />
       <Animated.View style={animatedCoverStyles}>
         <DrawerItemList {...props} />
-
         <DrawerItem label="Signout" onPress={signOut} />
       </Animated.View>
     </DrawerContentScrollView>
