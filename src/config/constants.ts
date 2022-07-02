@@ -11,6 +11,7 @@ export const Screens = {
   Splash: 'Splash',
   SignIn: 'SignIn',
   OnBoarding: 'OnBoarding',
+  Register: 'Register',
 };
 
 export const API_URL = Config.API_URL;

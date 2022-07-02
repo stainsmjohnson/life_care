@@ -30,6 +30,7 @@ const authSlice: StoreSlice<AuthState, AuthActions> = (set, get) => ({
 
   signIn: async () => {
     try {
+      set({ initilizing: true });
       const { idToken } = await GoogleSignin.signIn();
       if (!idToken) {
         throw new Error('Invalid idToken');
@@ -37,6 +38,7 @@ const authSlice: StoreSlice<AuthState, AuthActions> = (set, get) => ({
 
       const googleCredential = auth.GoogleAuthProvider.credential(idToken);
       await auth().signInWithCredential(googleCredential);
+      set({ initilizing: false });
     } catch (err: any) {
       console.warn('Google Signin Error', err.message, err.code);
     }

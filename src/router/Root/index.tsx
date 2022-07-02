@@ -12,6 +12,7 @@ import { Navigators, Screens } from 'config/constants';
 import { StyleSheet } from 'react-native';
 import { Colors } from '@theme';
 import useStore from 'store/index';
+import Register from '@screens/Register';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,7 +26,10 @@ const RootStack = () => {
         animation: user ? 'slide_from_right' : 'slide_from_left',
       }}>
       {!user ? (
-        <Stack.Screen name={Screens.SignIn} component={SignIn} />
+        <>
+          <Stack.Screen name={Screens.SignIn} component={SignIn} />
+          <Stack.Screen name={Screens.Register} component={Register} />
+        </>
       ) : (
         <Stack.Screen name={Navigators.Drawer} component={Drawer} />
       )}
