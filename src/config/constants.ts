@@ -1,5 +1,6 @@
 import Config from 'react-native-config';
 import { Dimensions } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 const { width, height } = Dimensions.get('screen');
 
 export const Navigators = {
@@ -27,3 +28,9 @@ export enum CONVERTER {
 
 export const FIREBASE_CLIENT_ID =
   '42659512177-smga403j9judbdk9pt764sd5c9poakeo.apps.googleusercontent.com';
+
+export const nativeBaseConfig = {
+  dependencies: {
+    'linear-gradient': LinearGradient,
+  },
+};

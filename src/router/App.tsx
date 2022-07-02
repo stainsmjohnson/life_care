@@ -16,6 +16,7 @@ import Splash from '@screens/Splash';
 import useStore from 'store/index';
 import { useNotification } from 'store/notification';
 import { NativeBaseProvider } from 'native-base';
+import { nativeBaseConfig } from 'config/constants';
 
 const App = () => {
   const init = useStore(state => state.init);
@@ -47,7 +48,7 @@ const App = () => {
   };
 
   return (
-    <NativeBaseProvider>
+    <NativeBaseProvider config={nativeBaseConfig}>
       <NavigationContainer
         theme={isDarkMode ? DarkTheme : DefaultTheme}
         linking={linking}
