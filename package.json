@@ -1,0 +1,74 @@
+{
+  "name": "templatern",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "ios": "react-native run-ios",
+    "start": "react-native start",
+    "test": "jest",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "clean": "cd android && ./gradlew clean",
+    "android": "ENVFILE=./env/.env.development react-native run-android --variant=developmentdebug",
+    "android:release": "ENVFILE=./env/.env.development react-native run-android --variant=developmentrelease",
+    "android:stage": "ENVFILE=./env/.env.staging react-native run-android --variant=stagingdebug",
+    "android:stage-release": "ENVFILE=./env/.env.staging react-native run-android --variant=stagingrelease",
+    "android:prod": "ENVFILE=./env/.env.production react-native run-android --variant=productiondebug",
+    "android:prod-release": "ENVFILE=./env/.env.production react-native run-android --variant=productionrelease",
+    "cp:android": "ENVFILE=./env/.env.development appcenter codepush release-react -a stains.mj/TemplateRN-Android -d Development",
+    "cp:android:stage": "ENVFILE=./env/.env.staging appcenter codepush release-react -a stains.mj/TemplateRN-Android -d Staging",
+    "cp:android:prod": "ENVFILE=./env/.env.production appcenter codepush release-react -a stains.mj/TemplateRN-Android -d Production"
+  },
+  "dependencies": {
+    "@notifee/react-native": "^5.3.0",
+    "@react-native-firebase/app": "^14.7.0",
+    "@react-native-firebase/auth": "^14.7.0",
+    "@react-native-firebase/messaging": "^15.0.0",
+    "@react-native-google-signin/google-signin": "^7.2.2",
+    "@react-navigation/drawer": "^6.4.1",
+    "@react-navigation/native": "^6.0.10",
+    "@react-navigation/native-stack": "^6.6.1",
+    "lottie-ios": "3.2.3",
+    "lottie-react-native": "^5.0.1",
+    "react": "17.0.2",
+    "react-native": "0.68.0",
+    "react-native-code-push": "^7.0.4",
+    "react-native-config": "^1.4.5",
+    "react-native-gesture-handler": "^2.4.0",
+    "react-native-reanimated": "^2.7.0",
+    "react-native-safe-area-context": "^4.2.4",
+    "react-native-screens": "^3.13.1",
+    "react-native-svg": "^12.3.0",
+    "zustand": "^4.0.0-rc.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.9",
+    "@babel/runtime": "^7.12.5",
+    "@react-native-community/eslint-config": "^2.0.0",
+    "@types/jest": "^26.0.23",
+    "@types/react-native": "^0.67.3",
+    "@types/react-test-renderer": "^17.0.1",
+    "@typescript-eslint/eslint-plugin": "^5.17.0",
+    "@typescript-eslint/parser": "^5.17.0",
+    "babel-jest": "^26.6.3",
+    "babel-plugin-module-resolver": "^4.1.0",
+    "eslint": "^7.32.0",
+    "jest": "^26.6.3",
+    "metro-react-native-babel-preset": "^0.67.0",
+    "react-test-renderer": "17.0.2",
+    "typescript": "^4.4.4"
+  },
+  "resolutions": {
+    "@types/react": "^17"
+  },
+  "jest": {
+    "preset": "react-native",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
+  }
+}
