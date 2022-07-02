@@ -28,6 +28,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { Scales } from '@theme';
+import { Screens } from 'config/constants';
 
 const PressableEffect = ({ children, ...restProps }: any) => (
   <TouchableOpacity {...restProps}>{children}</TouchableOpacity>
@@ -35,12 +36,17 @@ const PressableEffect = ({ children, ...restProps }: any) => (
 
 const SignIn = ({ navigation }) => {
   const signIn = useStore(state => state.signIn);
-  const [isRegisterFlow, setIsRegisterFlow] = useState(false);
-  const initilizing = useStore(state => state.initilizing);
 
-  if (initilizing) {
-    return <Spinner />;
-  }
+  const [isRegisterFlow, setIsRegisterFlow] = useState(false);
+
+  const login = async () => {
+    const isNewUser = await signIn();
+    console.log('####isNewUser', isNewUser);
+
+    if (isNewUser) {
+      navigation.navigate(Screens.Register);
+    }
+  };
 
   return (
     <View flex={1} bgColor={'#1b2732'}>
@@ -124,8 +130,8 @@ const SignIn = ({ navigation }) => {
                     color: 'warmGray.200',
                   }}>
                   {isRegisterFlow
-                    ? `I'm already have account `
-                    : `I'm a new user `}
+                    ? "I'm already have account "
+                    : "I'm a new user "}
                 </Text>
                 <Pressable
                   onPress={() => {
@@ -147,8 +153,7 @@ const SignIn = ({ navigation }) => {
                     <GoogleSigninButton
                       size={GoogleSigninButton.Size.Wide}
                       color={GoogleSigninButton.Color.Light}
-                      onPress={signIn}
-                      disabled={initilizing}
+                      onPress={login}
                       style={{
                         width: '100%',
                       }}

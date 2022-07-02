@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Button,
@@ -16,12 +16,34 @@ import {
 } from 'native-base';
 import { SceneMap, TabView } from 'react-native-tab-view';
 import { Animated, Dimensions } from 'react-native';
+import useStore from 'store';
 
 const RegisterForm = () => {
   return <Text>RegisterForm</Text>;
 };
 
 const DoctorForm = () => {
+  const register = useStore(state => state.register);
+  const user = useStore(state => state.user);
+
+  const [name, setName] = useState(user?.displayName ?? '');
+  const [email, setEmail] = useState(user?.email ?? '');
+  const [phone, setPhone] = useState('');
+  const [height, setHeight] = useState('');
+  const [weight, setWeight] = useState('');
+  const [dob, setDob] = useState('');
+  const [hospital, setHospital] = useState('');
+
+  const registerUser = () => {
+    register({
+      name,
+      email,
+      isDoctor: true,
+      hospital,
+      phone,
+    });
+  };
+
   return (
     <ScrollView>
       <Center w="100%">
@@ -51,24 +73,36 @@ const DoctorForm = () => {
           <VStack space={3} mt="5">
             <FormControl>
               <FormControl.Label>Name</FormControl.Label>
-              <Input placeholder="Enter your name" />
+              <Input
+                placeholder="Enter your name"
+                value={name}
+                onChangeText={setName}
+              />
             </FormControl>
             <FormControl>
               <FormControl.Label>Email</FormControl.Label>
               <Input
                 placeholder="Enter your Email"
                 keyboardType="email-address"
+                value={email}
+                onChangeText={setEmail}
               />
             </FormControl>
             <FormControl>
               <FormControl.Label>Date Of Birth</FormControl.Label>
-              <Input placeholder="DD/MM/YYYY" />
+              <Input
+                placeholder="DD/MM/YYYY"
+                value={dob}
+                onChangeText={setDob}
+              />
             </FormControl>
             <FormControl>
               <FormControl.Label>Weight</FormControl.Label>
               <Input
                 keyboardType="number-pad"
                 placeholder="Enter your weight"
+                value={weight}
+                onChangeText={setWeight}
               />
             </FormControl>
             <FormControl>
@@ -76,11 +110,17 @@ const DoctorForm = () => {
               <Input
                 keyboardType="decimal-pad"
                 placeholder="Enter your Height"
+                value={height}
+                onChangeText={setHeight}
               />
             </FormControl>
             <FormControl>
               <FormControl.Label>Working Hospital (If any)</FormControl.Label>
-              <Input placeholder="Enter Working Hospital / Clinic" />
+              <Input
+                placeholder="Enter Working Hospital / Clinic"
+                value={hospital}
+                onChangeText={setHospital}
+              />
             </FormControl>
             <FormControl>
               <FormControl.Label>Contact</FormControl.Label>
@@ -90,7 +130,7 @@ const DoctorForm = () => {
                 maxLength={10}
               />
             </FormControl>
-            <Button mt="2" colorScheme="indigo">
+            <Button mt="2" colorScheme="indigo" onPress={registerUser}>
               Save Details
             </Button>
           </VStack>
@@ -101,6 +141,25 @@ const DoctorForm = () => {
 };
 
 const UserForm = () => {
+  const register = useStore(state => state.register);
+  const user = useStore(state => state.user);
+
+  const [name, setName] = useState(user?.displayName ?? '');
+  const [email, setEmail] = useState(user?.email ?? '');
+  const [phone, setPhone] = useState('');
+  const [height, setHeight] = useState('');
+  const [weight, setWeight] = useState('');
+  const [dob, setDob] = useState('');
+
+  const registerUser = () => {
+    register({
+      name,
+      email,
+      isDoctor: false,
+      phone,
+    });
+  };
+
   return (
     <ScrollView>
       <Center w="100%">
@@ -130,24 +189,36 @@ const UserForm = () => {
           <VStack space={3} mt="5">
             <FormControl>
               <FormControl.Label>Name</FormControl.Label>
-              <Input placeholder="Enter your name" />
+              <Input
+                placeholder="Enter your name"
+                value={name}
+                onChangeText={setName}
+              />
             </FormControl>
             <FormControl>
               <FormControl.Label>Email</FormControl.Label>
               <Input
                 placeholder="Enter your Email"
                 keyboardType="email-address"
+                value={email}
+                onChangeText={setEmail}
               />
             </FormControl>
             <FormControl>
               <FormControl.Label>Date Of Birth</FormControl.Label>
-              <Input placeholder="DD/MM/YYYY" />
+              <Input
+                placeholder="DD/MM/YYYY"
+                value={dob}
+                onChangeText={setDob}
+              />
             </FormControl>
             <FormControl>
               <FormControl.Label>Weight</FormControl.Label>
               <Input
                 keyboardType="number-pad"
                 placeholder="Enter your weight"
+                value={weight}
+                onChangeText={setWeight}
               />
             </FormControl>
             <FormControl>
@@ -155,6 +226,8 @@ const UserForm = () => {
               <Input
                 keyboardType="decimal-pad"
                 placeholder="Enter your Height"
+                value={height}
+                onChangeText={setHeight}
               />
             </FormControl>
             <FormControl>
@@ -163,9 +236,11 @@ const UserForm = () => {
                 keyboardType="number-pad"
                 placeholder="Enter your Contact"
                 maxLength={10}
+                value={phone}
+                onChangeText={setPhone}
               />
             </FormControl>
-            <Button mt="2" colorScheme="indigo">
+            <Button mt="2" colorScheme="indigo" onPress={registerUser}>
               Save Details
             </Button>
           </VStack>
@@ -176,7 +251,7 @@ const UserForm = () => {
 };
 
 const Register = () => {
-  const [index, setIndex] = React.useState(0);
+  const [index, setIndex] = React.useState(1);
   const [routes] = React.useState([
     {
       key: 'doctor',

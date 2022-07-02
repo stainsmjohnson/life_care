@@ -24,11 +24,9 @@ const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
 
   React.useEffect(() => {
-    const remove = init();
     const removeFCM = initFCM();
 
     return () => {
-      remove();
       removeFCM();
     };
   }, []);

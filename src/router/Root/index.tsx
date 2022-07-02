@@ -18,6 +18,7 @@ const Stack = createNativeStackNavigator();
 
 const RootStack = () => {
   const user = useStore(state => state.user);
+  const initilizing = useStore(state => state.initilizing);
 
   return (
     <Stack.Navigator
@@ -25,7 +26,7 @@ const RootStack = () => {
         headerShown: false,
         animation: user ? 'slide_from_right' : 'slide_from_left',
       }}>
-      {!user ? (
+      {!user || initilizing ? (
         <>
           <Stack.Screen name={Screens.SignIn} component={SignIn} />
           <Stack.Screen name={Screens.Register} component={Register} />
