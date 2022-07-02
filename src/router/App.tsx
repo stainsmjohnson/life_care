@@ -15,6 +15,7 @@ import { Linking, useColorScheme } from 'react-native';
 import Splash from '@screens/Splash';
 import useStore from 'store/index';
 import { useNotification } from 'store/notification';
+import { NativeBaseProvider } from 'native-base';
 
 const App = () => {
   const init = useStore(state => state.init);
@@ -46,12 +47,14 @@ const App = () => {
   };
 
   return (
-    <NavigationContainer
-      theme={isDarkMode ? DarkTheme : DefaultTheme}
-      linking={linking}
-      fallback={<Splash />}>
-      <RootStack />
-    </NavigationContainer>
+    <NativeBaseProvider>
+      <NavigationContainer
+        theme={isDarkMode ? DarkTheme : DefaultTheme}
+        linking={linking}
+        fallback={<Splash />}>
+        <RootStack />
+      </NavigationContainer>
+    </NativeBaseProvider>
   );
 };
 

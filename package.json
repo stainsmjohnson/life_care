@@ -29,6 +29,7 @@
     "@react-navigation/native-stack": "^6.6.1",
     "lottie-ios": "3.2.3",
     "lottie-react-native": "^5.0.1",
+    "native-base": "^3.4.7",
     "react": "17.0.2",
     "react-native": "0.68.0",
     "react-native-code-push": "^7.0.4",
