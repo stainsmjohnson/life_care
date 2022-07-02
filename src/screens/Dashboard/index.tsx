@@ -144,7 +144,12 @@ const Dashboard = ({ navigation }: NativeStackScreenProps<Props>) => {
         <Box px="5">
           <Heading>Your Appointments</Heading>
           <Flex direction="row">
-            <Pressable flex={2} bg="red.100" rounded="xl" p="3">
+            <Pressable
+              flex={2}
+              bg="red.100"
+              rounded="xl"
+              p="3"
+              onPress={() => navigation.navigate(Screens.UserAppointment)}>
               <Heading size={'md'}>Today</Heading>
               <Text>No Due</Text>
             </Pressable>
