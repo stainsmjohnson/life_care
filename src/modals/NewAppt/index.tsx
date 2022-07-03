@@ -7,14 +7,16 @@ import {
   Heading,
   Input,
   ScrollView,
+  Pressable,
   Select,
   Text,
   View,
   VStack,
 } from 'native-base';
-import RNDateTimePicker from '@react-native-community/datetimepicker';
+import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 
 import useStore, { useAppointment, useDoctors } from 'store';
+import moment from 'moment';
 
 type Props = {};
 
@@ -25,8 +27,8 @@ const NewAppt = ({ navigation }: NativeStackScreenProps<Props>) => {
 
   const [reason, setReason] = useState('');
   const [doctor, setDoctor] = useState('');
-  const [date, setDate] = useState('');
-  const [time, setTime] = useState('');
+  const [date, setDate] = useState(new Date());
+  const [time, setTime] = useState(new Date());
 
   const createAppt = () => {
     createAppointment({
@@ -34,8 +36,8 @@ const NewAppt = ({ navigation }: NativeStackScreenProps<Props>) => {
       reason,
       doctorId: doctor?.id,
       doctorName: doctor?.name,
-      date,
-      time,
+      date: moment(date).format('DD/MM/YYYY'),
+      time: moment(time).format('hh:mm A'),
     });
     navigation.pop();
   };
@@ -62,8 +64,8 @@ const NewAppt = ({ navigation }: NativeStackScreenProps<Props>) => {
             <Select
               selectedValue={doctor?.name}
               minWidth="200"
-              accessibilityLabel="Choose Service"
-              placeholder="Choose Service"
+              accessibilityLabel="Choose Doctor"
+              placeholder="Choose Doctor"
               _selectedItem={{
                 bg: 'teal.600',
                 endIcon: <CheckIcon size="5" />,
@@ -71,7 +73,7 @@ const NewAppt = ({ navigation }: NativeStackScreenProps<Props>) => {
               mt={1}
               onValueChange={itemValue => {
                 const parsed = doctors?.find(d => d.id === itemValue);
-                setDoctor(parsed);
+                setDoctor(parsed?._data);
               }}>
               {doctors?.map?.(doc => {
                 return (
@@ -83,38 +85,51 @@ const NewAppt = ({ navigation }: NativeStackScreenProps<Props>) => {
               })}
             </Select>
 
-            <RNDateTimePicker value={new Date()} onChange={() => {}} />
-            <FormControl.Label mt={'5'}>Date</FormControl.Label>
-            <Input
-              variant="underlined"
-              borderBottomColor={'gray.400'}
-              placeholder="Select date"
-              fontSize={'sm'}
-              value={date}
-              onChangeText={setDate}
-            />
+            <FormControl.Label>Date</FormControl.Label>
+            <Pressable
+              onPress={() => {
+                DateTimePickerAndroid.open({
+                  value: date,
+                  onChange: val => setDate(new Date(val.nativeEvent.timestamp)),
+                });
+              }}>
+              <Input
+                variant="underlined"
+                borderBottomColor={'gray.400'}
+                placeholder="Select date"
+                fontSize={'sm'}
+                value={moment(date).format('DD/MM/YYYY')}
+                editable={false}
+              />
+            </Pressable>
 
-            <FormControl.Label mt={5}>Time</FormControl.Label>
-            <Input
-              variant="underlined"
-              borderBottomColor={'gray.400'}
-              placeholder="Select time"
-              fontSize={'sm'}
-              value={time}
-              onChangeText={setTime}
-            />
+            <FormControl.Label>Time</FormControl.Label>
+            <Pressable
+              onPress={() => {
+                DateTimePickerAndroid.open({
+                  mode: 'time',
+                  value: time,
+                  onChange: val => setTime(new Date(val.nativeEvent.timestamp)),
+                });
+              }}>
+              <Input
+                variant="underlined"
+                borderBottomColor={'gray.400'}
+                placeholder="Select time"
+                fontSize={'sm'}
+                value={moment(time).format('hh:mm A')}
+                editable={false}
+              />
+            </Pressable>
           </FormControl>
         </VStack>
-        <Button onPress={createAppt} mt="5" variant={'solid'} rounded={'lg'}>
-          <Text color={'white'} fontWeight={'bold'}>
-            Consult Doctor
-          </Text>
+        <Button onPress={createAppt} mt="5" variant={'solid'}>
+          Create
         </Button>
         <Button
           onPress={() => navigation.pop()}
-          mt="4"
+          mt="5"
           variant={'outline'}
-          rounded={'lg'}
           borderColor="blue.700">
           Cancel
         </Button>

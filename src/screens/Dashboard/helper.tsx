@@ -2,6 +2,7 @@ import React from 'react';
 import { HealthStatus } from './constants';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import moment from 'moment';
 
 export const getScreenContent = (status: HealthStatus) => {
   const bg = {
@@ -26,4 +27,17 @@ export const getScreenContent = (status: HealthStatus) => {
   };
 
   return bg[status];
+};
+
+export const getTodaysAppts = (appts = []) => {
+  const pending = appts?.filter(ap => {
+    const isValid = moment(ap?._data?.date).isValid();
+    const isToday = ap?._data?.date === moment().format('DD/MM/YYYY');
+    const isPending = !ap?._data?.isDone;
+    return isValid && isToday && isPending;
+  });
+
+  return {
+    pending: pending.length,
+  };
 };

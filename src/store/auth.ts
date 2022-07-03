@@ -38,12 +38,14 @@ const authSlice: StoreSlice<AuthState, AuthActions> = (set, get) => ({
       //check user already there
       const userDetails = await usersCollection.doc(user.user.uid).get();
 
-      console.log('###', userDetails.exists, userDetails.data());
+      console.log('###', userDetails.exists, userDetails.data(), user.user);
 
       const userBasicDetails = {
         photoURL: user.user.photoURL,
         phoneNumber: user.user.phoneNumber,
         id: user.user.uid,
+        email:user.user.email,
+        name: user.user.displayName
       };
 
       if (!userDetails.exists) {

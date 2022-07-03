@@ -18,7 +18,7 @@ import { Animated, Dimensions } from 'react-native';
 const UserAppointments = () => {
   const [isPatientList, setIsPatientList] = useState(false);
   const user = useStore(state => state.user);
-  const getAppts = useAppointment(store => store.getAppts);
+
   const appts = useAppointment(store => store.appts);
   const doctorAppts = useAppointment(store => store.doctorAppts);
 
@@ -33,10 +33,6 @@ const UserAppointments = () => {
       title: 'My Patients',
     },
   ]);
-
-  useEffect(() => {
-    getAppts({ user: user.id });
-  }, []);
 
   const MyAppointment = () => {
     return (

@@ -1,7 +1,11 @@
 import {} from 'react-native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import useStore, { useDoctors, useTransaction } from 'store/index';
+import useStore, {
+  useAppointment,
+  useDoctors,
+  useTransaction,
+} from 'store/index';
 
 import YAxisExample from '@widgets/Chart';
 
@@ -23,7 +27,7 @@ import {
   // Icon,
 } from 'native-base';
 import { HealthStatus } from './constants';
-import { getScreenContent } from './helper';
+import { getScreenContent, getTodaysAppts } from './helper';
 import { Screens } from 'config/constants';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -35,6 +39,8 @@ const Dashboard = ({ navigation }: NativeStackScreenProps<Props>) => {
   const user = useStore(state => state.user);
   const transactions = useTransaction(state => state.data);
   const addTrans = useTransaction(state => state.create);
+  const getAppts = useAppointment(store => store.getAppts);
+  const appts = useAppointment(store => store.appts);
   const remTrans = useTransaction(state => state.delete);
   const getAllTrans = useTransaction(state => state.get);
   const showNotification = useNotification(state => state.show);
@@ -53,6 +59,7 @@ const Dashboard = ({ navigation }: NativeStackScreenProps<Props>) => {
   }
 
   React.useEffect(() => {
+    getAppts({ user: user.id });
     getAllTrans();
     getDoctors();
   }, []);
@@ -63,6 +70,8 @@ const Dashboard = ({ navigation }: NativeStackScreenProps<Props>) => {
   const content = getScreenContent(status);
 
   const createNewAppt = () => {};
+
+  const todayAppts = useMemo(() => getTodaysAppts(appts), [appts]);
 
   const _renderStatus = () => {
     return (
@@ -195,8 +204,13 @@ const Dashboard = ({ navigation }: NativeStackScreenProps<Props>) => {
                   color="black"
                 />
               </Flex>
+
               <Text textAlign={'center'} py={'3'}>
-                No Upcoming Appointments
+                {todayAppts?.pending === 0
+                  ? 'No Upcoming Appointments'
+                  : todayAppts?.pending === 1
+                  ? '1 Upcoming Appointment'
+                  : `${todayAppts?.pending} Upcoming Appointments`}
               </Text>
             </Pressable>
           </Flex>
