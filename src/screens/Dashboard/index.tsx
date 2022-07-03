@@ -39,6 +39,27 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 
 type Props = {};
 
+const getBMIText = (bmiValue: any) => {
+  console.log('bmi Values', bmiValue <= 18.4);
+  let returnText = '';
+
+  if (bmiValue <= 18.4) {
+    returnText = 'Range is below 18.4, which is considered as Underweight';
+  } else if (bmiValue >= 18.5 && bmiValue <= 24.9) {
+    returnText =
+      'Range is between 18.5 and 24.9, which is considered as Normal';
+  } else if (bmiValue >= 25.0 && bmiValue <= 39.9) {
+    returnText =
+      'Range is between 25.0 and 39.9, which is considered as OverWeight';
+  } else if (bmiValue >= 40.0) {
+    returnText = 'Range is above 40.0, which is considered as Obese';
+  } else {
+    returnText = `Your BMI is ${bmiValue}`;
+  }
+
+  return returnText;
+};
+
 const Dashboard = ({ navigation }: NativeStackScreenProps<Props>) => {
   const user = useStore(state => state.user);
   const calories = useStore(state => state.calories);
@@ -52,6 +73,8 @@ const Dashboard = ({ navigation }: NativeStackScreenProps<Props>) => {
   const getAllTrans = useTransaction(state => state.get);
   const showNotification = useNotification(state => state.show);
   const getDoctors = useDoctors(state => state.getDoctors);
+
+  const [bmiDetails, setBmiDetails] = useState<any>();
 
   const [status, setStatus] = React.useState<HealthStatus>(
     HealthStatus.Excellent,
@@ -78,6 +101,7 @@ const Dashboard = ({ navigation }: NativeStackScreenProps<Props>) => {
     getAppts({ user: user.id });
     getAllTrans();
     getDoctors();
+    calculateBMIIndex();
   }, []);
   //checkcircle
   //escalator-warning
@@ -86,6 +110,34 @@ const Dashboard = ({ navigation }: NativeStackScreenProps<Props>) => {
   const content = getScreenContent(status);
 
   const todayAppts = useMemo(() => getTodaysAppts(appts), [appts]);
+
+  const calculateBMIIndex = () => {
+    // 39.37
+    let bmiIndex = 17;
+
+    if (!!user?.weight && !!user?.height) {
+      const height = Number(user.height) * 30.48;
+      bmiIndex = (Number(user.weight) / height / height) * 10000;
+      // const feet = Math.floor(user.height) / 10.764;
+      // console.log(Number(user.weight) / (Number(user.height) / 10.764));
+      // bmiIndex = Number(user.weight) / ((Number(user.height) / 39.37) * 2);
+      if (bmiIndex) {
+        bmiIndex = Number(bmiIndex.toFixed(2));
+      }
+    }
+
+    if (bmiIndex <= 18.4) {
+      setStatus(HealthStatus.Fine);
+    } else if (bmiIndex > 18.5 && bmiIndex < 24) {
+      setStatus(HealthStatus.Excellent);
+    } else {
+      setStatus(HealthStatus.Rough);
+    }
+
+    // console.log({ bmiIndex, bmiText: getBMIText(Number(bmiIndex)) });
+
+    setBmiDetails({ bmiIndex, bmiText: getBMIText(Number(bmiIndex)) });
+  };
 
   const _renderStatus = () => {
     return (
@@ -108,7 +160,7 @@ const Dashboard = ({ navigation }: NativeStackScreenProps<Props>) => {
           Hi {user?.name},
         </Heading>
 
-        <Row px={5} mb={10}>
+        <Row px={5} mb={5}>
           <Box flex={1} mr={3} h="120" bg={'white'} rounded="25">
             <Center flex={1}>
               <Box
@@ -122,7 +174,7 @@ const Dashboard = ({ navigation }: NativeStackScreenProps<Props>) => {
                 <MaterialIcons name="height" size={20} color={'blue'} />
               </Box>
               <Heading size={'sm'} color={'black'}>
-                190 cm
+                {user.height ? user.height : '190'} ft
               </Heading>
               <Text color={'black'}>Height</Text>
             </Center>
@@ -141,7 +193,7 @@ const Dashboard = ({ navigation }: NativeStackScreenProps<Props>) => {
                 <Icon name="user" size={20} color={'green'} />
               </Box>
               <Heading size={'sm'} color={'black'}>
-                18
+                {!!bmiDetails?.bmiIndex ? bmiDetails.bmiIndex : null}
               </Heading>
               <Text color={'black'}>BMI (Normal)</Text>
             </Center>
@@ -160,30 +212,32 @@ const Dashboard = ({ navigation }: NativeStackScreenProps<Props>) => {
                 <Icon name="weight" size={20} color={'blue'} />
               </Box>
               <Heading size={'sm'} color={'black'}>
-                50 kg
+                {user.weight ? user.weight : '50'} kg
               </Heading>
               <Text color={'black'}>Weight</Text>
             </Center>
           </Box>
         </Row>
-        {/* <Center>
-          <Center
-            _text={{
-              color: 'white',
-              fontWeight: 'bold',
-            }}
-            pt="5"
-            pb="10"
-            width={{
-              base: 200,
-              lg: 250,
-            }}>
-            {content.icon}
-            <Heading size="sm" mt={5}>
-              {content.title}
-            </Heading>
+        <View bgColor={'white'} mx={'5'} p="5">
+          <Center>
+            <Center
+              _text={{
+                color: 'white',
+                fontWeight: 'bold',
+              }}
+              // pt="5"
+              pb="10"
+              width={'full'}>
+              {content.icon}
+              <Heading size="sm" mt={3} width={'full'} textAlign={'center'}>
+                {content?.title}
+              </Heading>
+              {!!bmiDetails?.bmiText && (
+                <Text textAlign={'center'}>{bmiDetails.bmiText}</Text>
+              )}
+            </Center>
           </Center>
-        </Center> */}
+        </View>
       </Box>
     );
   };

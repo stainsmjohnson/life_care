@@ -3,6 +3,7 @@ import { HealthStatus } from './constants';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import moment from 'moment';
+import { Icon } from 'native-base';
 
 export const getScreenContent = (status: HealthStatus) => {
   const bg = {
@@ -15,13 +16,13 @@ export const getScreenContent = (status: HealthStatus) => {
     [HealthStatus.Fine]: {
       lg: ['yellow.100', 'yellow.200'],
       title: 'Your health is okay ;)',
-      icon: <AntDesign name="escalator-warning" size={30} color="green" />,
+      icon: <MaterialIcons name="escalator-warning" size={30} color="green" />,
       desc: 'Lorem asd as da sd as da sd a sd a sdasd',
     },
     [HealthStatus.Rough]: {
       lg: ['red.100', 'red.300'],
       title: 'Need Attention!',
-      icon: <MaterialIcons name="escalator-warning" size={30} color="#900" />,
+      icon: <MaterialIcons name="escalator-warning" size={30} color="green" />,
       desc: 'Lorem asd as da sd as da sd a sd a sdasd',
     },
   };
