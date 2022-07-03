@@ -4,7 +4,9 @@ import {
   Button,
   CheckIcon,
   FormControl,
+  Heading,
   Input,
+  ScrollView,
   Select,
   Text,
   View,
@@ -39,73 +41,84 @@ const NewAppt = ({ navigation }: NativeStackScreenProps<Props>) => {
   };
 
   return (
-    <View borderTopRadius={16} bg="warmGray.300" p="3">
-      <VStack space={3} mt="5">
-        <FormControl>
-          <FormControl.Label>Reason</FormControl.Label>
-          <Input
-            placeholder="Enter the reason for appointment"
-            variant="underlined"
-            borderBottomColor={'gray.400'}
-            fontSize={'sm'}
-            value={reason}
-            onChangeText={setReason}
-          />
-          <FormControl.Label>Doctor</FormControl.Label>
+    <View borderTopRadius={16} bg="white" p="3">
+      <ScrollView>
+        <VStack space={3} mt="5">
+          <Heading size={'md'} textAlign={'center'}>
+            Consult Doctor
+          </Heading>
+          <FormControl>
+            <FormControl.Label>Reason</FormControl.Label>
+            <Input
+              placeholder="Enter the reason for appointment"
+              variant="underlined"
+              borderBottomColor={'gray.400'}
+              fontSize={'sm'}
+              value={reason}
+              onChangeText={setReason}
+            />
+            <FormControl.Label mt={'5'}>Doctor</FormControl.Label>
 
-          <Select
-            selectedValue={doctor?.name}
-            minWidth="200"
-            accessibilityLabel="Choose Service"
-            placeholder="Choose Service"
-            _selectedItem={{
-              bg: 'teal.600',
-              endIcon: <CheckIcon size="5" />,
-            }}
-            mt={1}
-            onValueChange={itemValue => {
-              const parsed = doctors?.find(d => d.id === itemValue);
-              setDoctor(parsed);
-            }}>
-            {doctors?.map?.(doc => {
-              return (
-                <Select.Item label={doc?._data?.name} value={doc?._data?.id} />
-              );
-            })}
-          </Select>
+            <Select
+              selectedValue={doctor?.name}
+              minWidth="200"
+              accessibilityLabel="Choose Service"
+              placeholder="Choose Service"
+              _selectedItem={{
+                bg: 'teal.600',
+                endIcon: <CheckIcon size="5" />,
+              }}
+              mt={1}
+              onValueChange={itemValue => {
+                const parsed = doctors?.find(d => d.id === itemValue);
+                setDoctor(parsed);
+              }}>
+              {doctors?.map?.(doc => {
+                return (
+                  <Select.Item
+                    label={doc?._data?.name}
+                    value={doc?._data?.id}
+                  />
+                );
+              })}
+            </Select>
 
-          <RNDateTimePicker value={new Date()} onChange={() => {}} />
-          <FormControl.Label>Date</FormControl.Label>
-          <Input
-            variant="underlined"
-            borderBottomColor={'gray.400'}
-            placeholder="Select date"
-            fontSize={'sm'}
-            value={date}
-            onChangeText={setDate}
-          />
+            <RNDateTimePicker value={new Date()} onChange={() => {}} />
+            <FormControl.Label mt={'5'}>Date</FormControl.Label>
+            <Input
+              variant="underlined"
+              borderBottomColor={'gray.400'}
+              placeholder="Select date"
+              fontSize={'sm'}
+              value={date}
+              onChangeText={setDate}
+            />
 
-          <FormControl.Label>Time</FormControl.Label>
-          <Input
-            variant="underlined"
-            borderBottomColor={'gray.400'}
-            placeholder="Select time"
-            fontSize={'sm'}
-            value={time}
-            onChangeText={setTime}
-          />
-        </FormControl>
-      </VStack>
-      <Button onPress={createAppt} mt="5" variant={'solid'}>
-        Create
-      </Button>
-      <Button
-        onPress={() => navigation.pop()}
-        mt="5"
-        variant={'outline'}
-        borderColor="blue.700">
-        Cancel
-      </Button>
+            <FormControl.Label mt={5}>Time</FormControl.Label>
+            <Input
+              variant="underlined"
+              borderBottomColor={'gray.400'}
+              placeholder="Select time"
+              fontSize={'sm'}
+              value={time}
+              onChangeText={setTime}
+            />
+          </FormControl>
+        </VStack>
+        <Button onPress={createAppt} mt="5" variant={'solid'} rounded={'lg'}>
+          <Text color={'white'} fontWeight={'bold'}>
+            Consult Doctor
+          </Text>
+        </Button>
+        <Button
+          onPress={() => navigation.pop()}
+          mt="4"
+          variant={'outline'}
+          rounded={'lg'}
+          borderColor="blue.700">
+          Cancel
+        </Button>
+      </ScrollView>
     </View>
   );
 };
