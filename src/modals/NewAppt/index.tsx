@@ -98,6 +98,7 @@ const NewAppt = ({ navigation }: NativeStackScreenProps<Props>) => {
           <Pressable
             onPress={() => {
               DateTimePickerAndroid.open({
+                mode: 'time',
                 value: time,
                 onChange: val => setTime(new Date(val.nativeEvent.timestamp)),
               });
