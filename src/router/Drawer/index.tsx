@@ -2,9 +2,10 @@ import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 //screen
-import Transaction from '@screens/Transaction';
+import UserAppointments from '@screens/UserAppointments';
 import CustomDrawerContent from '@widgets/CustomDrawer';
 import Dashboard from '@screens/Dashboard';
+import { Screens } from 'config/constants';
 
 const DrawerNavigator = createDrawerNavigator();
 
@@ -12,8 +13,11 @@ const Drawer = () => {
   return (
     <DrawerNavigator.Navigator
       drawerContent={props => <CustomDrawerContent {...props} />}>
-      <DrawerNavigator.Screen name={'Feed'} component={Dashboard} />
-      <DrawerNavigator.Screen name="Article" component={Transaction} />
+      <DrawerNavigator.Screen name={Screens.Dashboard} component={Dashboard} />
+      <DrawerNavigator.Screen
+        name={Screens.UserAppointment}
+        component={UserAppointments}
+      />
     </DrawerNavigator.Navigator>
   );
 };

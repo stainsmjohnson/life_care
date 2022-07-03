@@ -180,8 +180,21 @@ const Dashboard = ({ navigation }: NativeStackScreenProps<Props>) => {
         <Box px="5">
           {/* <Heading>Your Appointments</Heading> */}
           <Flex direction="row">
-            <Pressable flex={2} bg="white" rounded="xl" p="3">
-              <Heading size={'sm'}>Appointments</Heading>
+            <Pressable
+              flex={2}
+              bg="white"
+              rounded="xl"
+              p="3"
+              onPress={() => navigation.navigate(Screens.UserAppointment)}>
+              <Flex flexDirection={'row'} justifyContent={'space-between'}>
+                <Heading size={'sm'}>Today</Heading>
+                <Icon
+                  name="arrow-right"
+                  size={15}
+                  style={{ marginRight: 5 }}
+                  color="black"
+                />
+              </Flex>
               <Text textAlign={'center'} py={'3'}>
                 No Upcoming Appointments
               </Text>

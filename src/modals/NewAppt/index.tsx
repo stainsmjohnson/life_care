@@ -28,7 +28,8 @@ const NewAppt = ({ navigation }: NativeStackScreenProps<Props>) => {
     createAppointment({
       user: user?.id,
       reason,
-      doctor: doctor?.id,
+      doctorId: doctor?.id,
+      doctorName: doctor?.name,
       date,
       time,
     });

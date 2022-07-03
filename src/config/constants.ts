@@ -13,6 +13,8 @@ export enum Screens {
   OnBoarding = 'OnBoarding',
   Register = 'Register',
   NewAppot = 'NewAppt',
+  Dashboard = 'Dashboard',
+  UserAppointment = 'UserAppointment',
 }
 
 export enum Collections {
