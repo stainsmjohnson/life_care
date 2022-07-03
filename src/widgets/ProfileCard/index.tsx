@@ -37,10 +37,12 @@ const ProfileCard = () => {
         </View>
       </Animated.View>
 
-      <View style={{ width: '100%', height: 100 }} />
-      <Text>{user?.name}</Text>
-      <Text>{user?.email}</Text>
-      <Text>{user?.phoneNumber}</Text>
+      <View style={{ width: '100%', height: 80 }} />
+      <View style={{ paddingHorizontal: 14 }}>
+        <Text style={{ fontWeight: 'bold', color: 'black' }}>{user?.name}</Text>
+        <Text>{user?.email}</Text>
+        <Text>{user?.phoneNumber}</Text>
+      </View>
     </View>
   );
 };
@@ -49,6 +51,7 @@ export default ProfileCard;
 
 const styles = StyleSheet.create({
   cover: {
+    marginTop: -5,
     width: '100%',
     height: 100,
     backgroundColor: 'lightblue',

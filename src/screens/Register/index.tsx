@@ -26,7 +26,7 @@ const DoctorForm = () => {
   const register = useStore(state => state.register);
   const user = useStore(state => state.user);
 
-  const [name, setName] = useState(user?.displayName ?? '');
+  const [name, setName] = useState(user?.name ?? '');
   const [email, setEmail] = useState(user?.email ?? '');
   const [phone, setPhone] = useState('');
   const [height, setHeight] = useState('');
@@ -76,6 +76,7 @@ const DoctorForm = () => {
               <Input
                 placeholder="Enter your name"
                 value={name}
+                isDisabled
                 onChangeText={setName}
               />
             </FormControl>
@@ -84,6 +85,7 @@ const DoctorForm = () => {
               <Input
                 placeholder="Enter your Email"
                 keyboardType="email-address"
+                isDisabled
                 value={email}
                 onChangeText={setEmail}
               />
@@ -144,7 +146,7 @@ const UserForm = () => {
   const register = useStore(state => state.register);
   const user = useStore(state => state.user);
 
-  const [name, setName] = useState(user?.displayName ?? '');
+  const [name, setName] = useState(user?.name ?? '');
   const [email, setEmail] = useState(user?.email ?? '');
   const [phone, setPhone] = useState('');
   const [height, setHeight] = useState('');
@@ -192,15 +194,18 @@ const UserForm = () => {
               <Input
                 placeholder="Enter your name"
                 value={name}
+                isDisabled
                 onChangeText={setName}
               />
             </FormControl>
             <FormControl>
               <FormControl.Label>Email</FormControl.Label>
+              {console.log('Email', email, name, user)}
               <Input
                 placeholder="Enter your Email"
                 keyboardType="email-address"
                 value={email}
+                isDisabled
                 onChangeText={setEmail}
               />
             </FormControl>

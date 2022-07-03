@@ -4,7 +4,9 @@ import {
   Button,
   CheckIcon,
   FormControl,
+  Heading,
   Input,
+  ScrollView,
   Pressable,
   Select,
   Text,
@@ -41,89 +43,97 @@ const NewAppt = ({ navigation }: NativeStackScreenProps<Props>) => {
   };
 
   return (
-    <View borderTopRadius={16} bg="warmGray.300" p="3">
-      <VStack space={3} mt="5">
-        <FormControl>
-          <FormControl.Label>Reason</FormControl.Label>
-          <Input
-            placeholder="Enter the reason for appointment"
-            variant="underlined"
-            borderBottomColor={'gray.400'}
-            fontSize={'sm'}
-            value={reason}
-            onChangeText={setReason}
-          />
-          <FormControl.Label>Doctor</FormControl.Label>
-
-          <Select
-            selectedValue={doctor?.name}
-            minWidth="200"
-            accessibilityLabel="Choose Doctor"
-            placeholder="Choose Doctor"
-            _selectedItem={{
-              bg: 'teal.600',
-              endIcon: <CheckIcon size="5" />,
-            }}
-            mt={1}
-            onValueChange={itemValue => {
-              const parsed = doctors?.find(d => d.id === itemValue);
-              setDoctor(parsed?._data);
-            }}>
-            {doctors?.map?.(doc => {
-              return (
-                <Select.Item label={doc?._data?.name} value={doc?._data?.id} />
-              );
-            })}
-          </Select>
-
-          <FormControl.Label>Date</FormControl.Label>
-          <Pressable
-            onPress={() => {
-              DateTimePickerAndroid.open({
-                value: date,
-                onChange: val => setDate(new Date(val.nativeEvent.timestamp)),
-              });
-            }}>
+    <View borderTopRadius={16} bg="white" p="3">
+      <ScrollView>
+        <VStack space={3} mt="5">
+          <Heading size={'md'} textAlign={'center'}>
+            Consult Doctor
+          </Heading>
+          <FormControl>
+            <FormControl.Label>Reason</FormControl.Label>
             <Input
+              placeholder="Enter the reason for appointment"
               variant="underlined"
               borderBottomColor={'gray.400'}
-              placeholder="Select date"
               fontSize={'sm'}
-              value={moment(date).format('DD/MM/YYYY')}
-              editable={false}
+              value={reason}
+              onChangeText={setReason}
             />
-          </Pressable>
+            <FormControl.Label mt={'5'}>Doctor</FormControl.Label>
 
-          <FormControl.Label>Time</FormControl.Label>
-          <Pressable
-            onPress={() => {
-              DateTimePickerAndroid.open({
-                mode: 'time',
-                value: time,
-                onChange: val => setTime(new Date(val.nativeEvent.timestamp)),
-              });
-            }}>
-            <Input
-              variant="underlined"
-              borderBottomColor={'gray.400'}
-              placeholder="Select time"
-              fontSize={'sm'}
-              value={moment(time).format('hh:mm A')}
-              editable={false}
-            />
-          </Pressable>
-        </FormControl>
-      </VStack>
-      <Button onPress={createAppt} mt="5" variant={'solid'}>
-        Create
-      </Button>
-      <Button
-        onPress={() => navigation.pop()}
-        mt="5"
-        variant={'outline'}
-        borderColor="blue.700">
-        Cancel
-      </Button>
+            <Select
+              selectedValue={doctor?.name}
+              minWidth="200"
+              accessibilityLabel="Choose Doctor"
+              placeholder="Choose Doctor"
+              _selectedItem={{
+                bg: 'teal.600',
+                endIcon: <CheckIcon size="5" />,
+              }}
+              mt={1}
+              onValueChange={itemValue => {
+                const parsed = doctors?.find(d => d.id === itemValue);
+                setDoctor(parsed?._data);
+              }}>
+              {doctors?.map?.(doc => {
+                return (
+                  <Select.Item
+                    label={doc?._data?.name}
+                    value={doc?._data?.id}
+                  />
+                );
+              })}
+            </Select>
+
+            <FormControl.Label>Date</FormControl.Label>
+            <Pressable
+              onPress={() => {
+                DateTimePickerAndroid.open({
+                  value: date,
+                  onChange: val => setDate(new Date(val.nativeEvent.timestamp)),
+                });
+              }}>
+              <Input
+                variant="underlined"
+                borderBottomColor={'gray.400'}
+                placeholder="Select date"
+                fontSize={'sm'}
+                value={moment(date).format('DD/MM/YYYY')}
+                editable={false}
+              />
+            </Pressable>
+
+            <FormControl.Label>Time</FormControl.Label>
+            <Pressable
+              onPress={() => {
+                DateTimePickerAndroid.open({
+                  mode: 'time',
+                  value: time,
+                  onChange: val => setTime(new Date(val.nativeEvent.timestamp)),
+                });
+              }}>
+              <Input
+                variant="underlined"
+                borderBottomColor={'gray.400'}
+                placeholder="Select time"
+                fontSize={'sm'}
+                value={moment(time).format('hh:mm A')}
+                editable={false}
+              />
+            </Pressable>
+          </FormControl>
+        </VStack>
+        <Button onPress={createAppt} mt="5" variant={'solid'}>
+          Create
+        </Button>
+        <Button
+          onPress={() => navigation.pop()}
+          mt="5"
+          variant={'outline'}
+          borderColor="blue.700">
+          Cancel
+        </Button>
+      </ScrollView>
     </View>
   );
 };

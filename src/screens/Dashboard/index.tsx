@@ -259,12 +259,12 @@ const Dashboard = ({ navigation, key }: NativeStackScreenProps<Props>) => {
               onPress={() => navigation.navigate(Screens.NewAppot)}></Pressable> */}
           </Flex>
 
-          <Flex direction="row" mt={5}>
+          <Flex direction="row" mt={5} mb={'10'}>
             <Pressable flex={2} bg="white" rounded="xl" p="3">
-              <Heading size={'sm'}>BMI Status</Heading>
+              <Heading size={'sm'}>BMI Chart</Heading>
               <Box
                 flex={1}
-                bg="red.100"
+                bg="white"
                 px="2"
                 pb={0}
                 rounded="xl"
