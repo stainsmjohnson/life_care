@@ -28,10 +28,13 @@ import {
   // Icon,
 } from 'native-base';
 import { HealthStatus } from './constants';
-import { getScreenContent, getTodaysAppts } from './helper';
+import {
+  getScreenContent,
+  getTodaysAppts,
+  howMuchCaloriesPerDay,
+} from './helper';
 import { deepurl, Screens } from 'config/constants';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 type Props = {};
@@ -59,6 +62,7 @@ const getBMIText = (bmiValue: any) => {
 
 const Dashboard = ({ navigation }: NativeStackScreenProps<Props>) => {
   const user = useStore(state => state.user);
+  const calories = useStore(state => state.calories);
   const getCalories = useStore(state => state.getCalories);
   const [caloryModal, setCaloryModal] = useState(false);
   const transactions = useTransaction(state => state.data);
@@ -84,20 +88,16 @@ const Dashboard = ({ navigation }: NativeStackScreenProps<Props>) => {
     });
   }
 
-  const getTokenDetails = async (token: any) => {
-    if (!token) {
-      return;
+  const getTokenDetails = async token => {
+    const cal = await getCalories(token, user?.email);
+    if (cal) {
+      setCaloryModal(cal);
     }
-    const cal = await getCalories(token);
-    setCaloryModal(cal);
   };
 
   React.useEffect(() => {
-    console.log('####key dd ', deepurl.current);
-    if (deepurl.current && typeof deepurl.current === 'string') {
-      const token = deepurl.current.split('token=')?.[1];
-      getTokenDetails(token);
-    }
+    const token = deepurl.current?.split?.('token=')?.[1];
+    getTokenDetails(token);
     getAppts({ user: user.id });
     getAllTrans();
     getDoctors();
@@ -250,12 +250,33 @@ const Dashboard = ({ navigation }: NativeStackScreenProps<Props>) => {
         size={'md'}>
         <View flex={1} justifyContent={'center'} alignItems={'center'}>
           <View bg={'white'} p="5" rounded={'8'} margin="3" minW={'80%'}>
-            <Heading>Your order</Heading>
-            <Row borderWidth={1}>
-              <Center>{caloryModal?.name}</Center>
-              <Center>{caloryModal?.count}</Center>
+            <Heading mb="5">Your order</Heading>
+            <Row borderWidth={1} bg="amber.100">
+              <Center p="2" flex={1}>
+                {'Item'}
+              </Center>
+              <Center p="2" flex={1}>
+                {'Count'}
+              </Center>
+              <Center p="2" flex={1}>
+                {'Calories'}
+              </Center>
             </Row>
-            <Text>Your order containing {caloryModal?.calories} calories.</Text>
+            <Row borderWidth={1}>
+              <Center p="2" flex={1}>
+                {caloryModal?.name}
+              </Center>
+              <Center p="2" flex={1}>
+                {caloryModal?.count}
+              </Center>
+              <Center p="2" flex={1}>
+                {caloryModal?.calories}
+              </Center>
+            </Row>
+            <Text mt="5">
+              Your order containing {caloryModal?.calories} calories.
+            </Text>
+            <Text mt="5">Your gained total of {calories} calories today.</Text>
           </View>
         </View>
       </Modal>
@@ -329,12 +350,18 @@ const Dashboard = ({ navigation }: NativeStackScreenProps<Props>) => {
             <Pressable flex={2} bg="white" rounded="xl" p="3">
               <Heading size={'sm'}>Calories burnt</Heading>
               <Text textAlign={'center'} py={'3'}>
-                350 Calories Burnt
+                {calories} Calories Burnt
               </Text>
               <View bgColor={'amber.100'} p={2} rounded={'lg'}>
                 <Text textAlign={'center'}>
                   <Icon name="exclamation-circle" size={15} color="black" /> You
-                  need to burn 327 more calories today
+                  need to burn{' '}
+                  {howMuchCaloriesPerDay(
+                    user?.weight,
+                    user?.height,
+                    user?.age,
+                  ) - calories}
+                  more calories today
                 </Text>
               </View>
             </Pressable>

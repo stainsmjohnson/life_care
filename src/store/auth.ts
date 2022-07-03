@@ -4,6 +4,7 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { FIREBASE_CLIENT_ID } from 'config/constants';
 import firestore from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import moment from 'moment';
 
 GoogleSignin.configure({
   webClientId: FIREBASE_CLIENT_ID,
@@ -25,6 +26,7 @@ const authSlice: StoreSlice<AuthState, AuthActions> = (set, get) => ({
   user: null,
   initilizing: true,
   isFetching: false,
+  calories: 0,
 
   signIn: async () => {
     try {
@@ -113,11 +115,32 @@ const authSlice: StoreSlice<AuthState, AuthActions> = (set, get) => ({
     console.log('User signed out!');
   },
 
-  getCalories: async (token: string) => {
+  getCalories: async (token: string, email) => {
     try {
+      let d = new Date();
+      d.setHours(0);
       const orderCollection = firestore().collection('order');
-      const data = await orderCollection.doc(token).get();
-      return data.data();
+      let data;
+      if (token) {
+        data = await orderCollection.doc(token).get();
+      }
+      const todayOrders = await orderCollection
+        .where('emailID', '==', email)
+        .get();
+
+      const docs = todayOrders.docs.filter(d => {
+        return (
+          moment(d._data?.date).format('DD/MM/YYYY') ===
+          moment().format('DD/MM/YYYY')
+        );
+      });
+
+      const todaysTotalCalory = docs.reduce((t, c) => {
+        return t + parseInt(c?.data().calories, 10);
+      }, 0);
+
+      set({ calories: todaysTotalCalory });
+      return data?.data();
     } catch (err) {
       console.log('##ERR', err.message);
     }

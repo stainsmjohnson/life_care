@@ -42,3 +42,10 @@ export const getTodaysAppts = (appts = []) => {
     pending: pending.length,
   };
 };
+
+export const howMuchCaloriesPerDay = (weight = 50, height = 150, age = 25) => {
+  const w = parseInt(weight, 10);
+  const h = parseInt(height, 10);
+  const a = parseInt(age, 10);
+  return 66 + 6.2 * w + 12.7 * h - 6.76 * a;
+};
