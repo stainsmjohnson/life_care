@@ -26,9 +26,9 @@
         <category android:name="android.intent.category.DEFAULT" />
         <category android:name="android.intent.category.BROWSABLE" />
         <data android:scheme="lifecare" />
-        <data android:scheme="https" android:host="www.lifecare.com" />
-        <data android:scheme="http" android:host="www.lifecare.com" />
-        <data android:scheme="http" android:host="www.lifecare.com/*"  />
+        <data android:scheme="https" android:host="www.lifecare1.com" />
+        <data android:scheme="http" android:host="www.lifecare1.com" />
+        <data android:scheme="http" android:host="www.lifecare1.com/*"  />
     </intent-filter>
       </activity>
     </application>

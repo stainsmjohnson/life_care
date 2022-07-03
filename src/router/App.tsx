@@ -45,7 +45,7 @@ const App = () => {
   const deeplinkSubscription = () => {};
 
   const linking: LinkingOptions<ReactNavigation.RootParamList> = {
-    prefixes: ['https://www.lifecare.com', 'http://www.lifecare.com'],
+    prefixes: ['https://www.lifecare1.com', 'http://www.lifecare1.com'],
     config: deeplinkConfig,
     getInitialURL,
     subscribe: deeplinkSubscription,
