@@ -10,6 +10,8 @@ import {
   View,
   VStack,
 } from 'native-base';
+import RNDateTimePicker from '@react-native-community/datetimepicker';
+
 import useStore, { useAppointment, useDoctors } from 'store';
 
 type Props = {};
@@ -72,6 +74,7 @@ const NewAppt = ({ navigation }: NativeStackScreenProps<Props>) => {
             })}
           </Select>
 
+          <RNDateTimePicker value={new Date()} onChange={() => {}} />
           <FormControl.Label>Date</FormControl.Label>
           <Input
             variant="underlined"
@@ -81,6 +84,7 @@ const NewAppt = ({ navigation }: NativeStackScreenProps<Props>) => {
             value={date}
             onChangeText={setDate}
           />
+
           <FormControl.Label>Time</FormControl.Label>
           <Input
             variant="underlined"
