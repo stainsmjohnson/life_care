@@ -8,7 +8,7 @@ type Config = {
 const config: Config = {
   screens: {
     [Screens.Dashboard]: {
-      path: '/',
+      path: '/:key',
     },
   },
 };

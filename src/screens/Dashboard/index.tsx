@@ -35,7 +35,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 
 type Props = {};
 
-const Dashboard = ({ navigation }: NativeStackScreenProps<Props>) => {
+const Dashboard = ({ navigation, key }: NativeStackScreenProps<Props>) => {
   const user = useStore(state => state.user);
   const transactions = useTransaction(state => state.data);
   const addTrans = useTransaction(state => state.create);
@@ -59,6 +59,8 @@ const Dashboard = ({ navigation }: NativeStackScreenProps<Props>) => {
   }
 
   React.useEffect(() => {
+    console.log('####key dd ', key);
+
     getAppts({ user: user.id });
     getAllTrans();
     getDoctors();
@@ -68,8 +70,6 @@ const Dashboard = ({ navigation }: NativeStackScreenProps<Props>) => {
   const { colors } = useTheme();
 
   const content = getScreenContent(status);
-
-  const createNewAppt = () => {};
 
   const todayAppts = useMemo(() => getTodaysAppts(appts), [appts]);
 
