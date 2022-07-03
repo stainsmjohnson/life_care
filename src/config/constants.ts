@@ -18,6 +18,7 @@ export enum Screens {
   NewAppot = 'NewAppt',
   Dashboard = 'Dashboard',
   UserAppointment = 'Appointments',
+  Profile = 'Profile',
 }
 
 export enum Collections {
