@@ -3,6 +3,7 @@ import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { FIREBASE_CLIENT_ID } from 'config/constants';
 import firestore from '@react-native-firebase/firestore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 GoogleSignin.configure({
   webClientId: FIREBASE_CLIENT_ID,
@@ -10,6 +11,7 @@ GoogleSignin.configure({
 interface AuthState {
   user: FirebaseAuthTypes.User | null;
   initilizing: boolean;
+  isFetching: boolean;
 }
 
 interface AuthActions {
@@ -22,11 +24,12 @@ interface AuthActions {
 const authSlice: StoreSlice<AuthState, AuthActions> = (set, get) => ({
   user: null,
   initilizing: true,
+  isFetching: false,
 
   signIn: async () => {
     try {
+      set({ initilizing: true, isFetching: true });
       const usersCollection = firestore().collection('Users');
-      set({ initilizing: true });
       const { idToken } = await GoogleSignin.signIn();
       if (!idToken) {
         throw new Error('Invalid idToken');
@@ -50,20 +53,27 @@ const authSlice: StoreSlice<AuthState, AuthActions> = (set, get) => ({
 
       if (!userDetails.exists) {
         const isNewUser = true;
-        set({ user: { ...user.user, ...userBasicDetails }, initilizing: true });
+        set({
+          user: { ...user.user, ...userBasicDetails },
+          initilizing: true,
+          isFetching: false,
+        });
         return isNewUser;
       } else {
         set({
           initilizing: false,
+          isFetching: false,
           user: {
             ...user.user,
             ...userBasicDetails,
             ...userDetails.data(),
           },
         });
+        AsyncStorage.setItem('USER', 'true');
       }
     } catch (err: any) {
       console.warn('Google Signin Error', err.message, err.code);
+      set({ isFetching: false });
     }
   },
 
@@ -95,6 +105,7 @@ const authSlice: StoreSlice<AuthState, AuthActions> = (set, get) => ({
     await GoogleSignin.signOut();
     // await GoogleSignin.revokeAccess();
     await auth().signOut();
+    AsyncStorage.clear();
     set({ initilizing: false, user: null });
     console.log('User signed out!');
   },

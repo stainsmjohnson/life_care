@@ -1,11 +1,16 @@
 import { PathConfigMap } from '@react-navigation/native';
+import { Screens } from './constants';
 
 type Config = {
   screens: PathConfigMap<ReactNavigation.RootParamList>;
 };
 
 const config: Config = {
-  screens: {},
+  screens: {
+    [Screens.Dashboard]: {
+      path: '/',
+    },
+  },
 };
 
 export default config;

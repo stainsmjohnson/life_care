@@ -28,6 +28,7 @@
         <data android:scheme="lifecare" />
         <data android:scheme="https" android:host="www.lifecare.com" />
         <data android:scheme="http" android:host="www.lifecare.com" />
+        <data android:scheme="http" android:host="www.lifecare.com/*"  />
     </intent-filter>
       </activity>
     </application>
