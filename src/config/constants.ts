@@ -1,11 +1,14 @@
 import Config from 'react-native-config';
 import { Dimensions } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import React from 'react';
 const { width, height } = Dimensions.get('screen');
 
 export const Navigators = {
   Drawer: 'Drawer',
 };
+
+export const deepurl = React.createRef();
 
 export enum Screens {
   Splash = 'Splash',

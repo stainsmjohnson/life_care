@@ -47,8 +47,8 @@ const authSlice: StoreSlice<AuthState, AuthActions> = (set, get) => ({
         photoURL: user.user.photoURL,
         phoneNumber: user.user.phoneNumber,
         id: user.user.uid,
-        email:user.user.email,
-        name: user.user.displayName
+        email: user.user.email,
+        name: user.user.displayName,
       };
 
       if (!userDetails.exists) {
@@ -83,6 +83,8 @@ const authSlice: StoreSlice<AuthState, AuthActions> = (set, get) => ({
     isDoctor = false,
     hospital = null,
     rating = null,
+    weight,
+    height,
   }) => {
     try {
       const user = get().user;
@@ -94,6 +96,8 @@ const authSlice: StoreSlice<AuthState, AuthActions> = (set, get) => ({
         hospital,
         rating,
         id: user?.id,
+        weight,
+        height,
       });
       set({ user: { ...user, isDoctor, hospital }, initilizing: false });
     } catch (err) {
@@ -108,6 +112,16 @@ const authSlice: StoreSlice<AuthState, AuthActions> = (set, get) => ({
     AsyncStorage.clear();
     set({ initilizing: false, user: null });
     console.log('User signed out!');
+  },
+
+  getCalories: async (token: string) => {
+    try {
+      const orderCollection = firestore().collection('order');
+      const data = await orderCollection.doc(token).get();
+      return data.data();
+    } catch (err) {
+      console.log('##ERR', err.message);
+    }
   },
 });
 

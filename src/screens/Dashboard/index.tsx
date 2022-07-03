@@ -1,5 +1,4 @@
-import {} from 'react-native';
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import useStore, {
   useAppointment,
@@ -17,6 +16,7 @@ import {
   Column,
   Flex,
   Heading,
+  Modal,
   Row,
   ScrollView,
   Text,
@@ -24,19 +24,22 @@ import {
   View,
   Pressable,
   VStack,
+
   // Icon,
 } from 'native-base';
 import { HealthStatus } from './constants';
 import { getScreenContent, getTodaysAppts } from './helper';
-import { Screens } from 'config/constants';
+import { deepurl, Screens } from 'config/constants';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 type Props = {};
 
-const Dashboard = ({ navigation, key }: NativeStackScreenProps<Props>) => {
+const Dashboard = ({ navigation }: NativeStackScreenProps<Props>) => {
   const user = useStore(state => state.user);
+  const getCalories = useStore(state => state.getCalories);
+  const [caloryModal, setCaloryModal] = useState(false);
   const transactions = useTransaction(state => state.data);
   const addTrans = useTransaction(state => state.create);
   const getAppts = useAppointment(store => store.getAppts);
@@ -58,9 +61,20 @@ const Dashboard = ({ navigation, key }: NativeStackScreenProps<Props>) => {
     });
   }
 
-  React.useEffect(() => {
-    console.log('####key dd ', key);
+  const getTokenDetails = async token => {
+    if (!token) {
+      return;
+    }
+    const cal = await getCalories(token);
+    setCaloryModal(cal);
+  };
 
+  React.useEffect(() => {
+    console.log('####key dd ', deepurl.current);
+    if (deepurl.current && typeof deepurl.current === 'string') {
+      const token = deepurl.current.split('token=')?.[1];
+      getTokenDetails(token);
+    }
     getAppts({ user: user.id });
     getAllTrans();
     getDoctors();
@@ -174,6 +188,26 @@ const Dashboard = ({ navigation, key }: NativeStackScreenProps<Props>) => {
     );
   };
 
+  const _renderCaloryModal = () => {
+    return (
+      <Modal
+        isOpen={!!caloryModal}
+        onClose={() => setCaloryModal(false)}
+        size={'md'}>
+        <View flex={1} justifyContent={'center'} alignItems={'center'}>
+          <View bg={'white'} p="5" rounded={'8'} margin="3" minW={'80%'}>
+            <Heading>Your order</Heading>
+            <Row borderWidth={1}>
+              <Center>{caloryModal?.name}</Center>
+              <Center>{caloryModal?.count}</Center>
+            </Row>
+            <Text>Your order containing {caloryModal?.calories} calories.</Text>
+          </View>
+        </View>
+      </Modal>
+    );
+  };
+
   return (
     <ScrollView>
       {_renderStatus()}
@@ -276,6 +310,7 @@ const Dashboard = ({ navigation, key }: NativeStackScreenProps<Props>) => {
           </Flex>
         </Box>
       </Box>
+      {_renderCaloryModal()}
     </ScrollView>
   );
 };

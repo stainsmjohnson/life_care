@@ -41,6 +41,8 @@ const DoctorForm = () => {
       isDoctor: true,
       hospital,
       phone,
+      weight,
+      height,
     });
   };
 
@@ -159,6 +161,8 @@ const UserForm = () => {
       email,
       isDoctor: false,
       phone,
+      weight,
+      height,
     });
   };
 

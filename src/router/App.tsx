@@ -15,7 +15,7 @@ import { Linking, useColorScheme } from 'react-native';
 import Splash from '@screens/Splash';
 import { useNotification } from 'store/notification';
 import { NativeBaseProvider } from 'native-base';
-import { nativeBaseConfig } from 'config/constants';
+import { deepurl, nativeBaseConfig } from 'config/constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useStore from 'store';
 
@@ -38,6 +38,7 @@ const App = () => {
 
   const getInitialURL = async (): Promise<string | null | undefined> => {
     const url = await Linking.getInitialURL();
+    deepurl.current = url;
     return url;
   };
 
