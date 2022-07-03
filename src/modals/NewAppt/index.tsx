@@ -67,7 +67,7 @@ const NewAppt = ({ navigation }: NativeStackScreenProps<Props>) => {
             mt={1}
             onValueChange={itemValue => {
               const parsed = doctors?.find(d => d.id === itemValue);
-              setDoctor(parsed);
+              setDoctor(parsed?._data);
             }}>
             {doctors?.map?.(doc => {
               return (
