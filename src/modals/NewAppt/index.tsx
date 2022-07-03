@@ -5,14 +5,16 @@ import {
   CheckIcon,
   FormControl,
   Input,
+  Pressable,
   Select,
   Text,
   View,
   VStack,
 } from 'native-base';
-import RNDateTimePicker from '@react-native-community/datetimepicker';
+import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 
 import useStore, { useAppointment, useDoctors } from 'store';
+import moment from 'moment';
 
 type Props = {};
 
@@ -23,8 +25,8 @@ const NewAppt = ({ navigation }: NativeStackScreenProps<Props>) => {
 
   const [reason, setReason] = useState('');
   const [doctor, setDoctor] = useState('');
-  const [date, setDate] = useState('');
-  const [time, setTime] = useState('');
+  const [date, setDate] = useState(new Date());
+  const [time, setTime] = useState(new Date());
 
   const createAppt = () => {
     createAppointment({
@@ -32,8 +34,8 @@ const NewAppt = ({ navigation }: NativeStackScreenProps<Props>) => {
       reason,
       doctorId: doctor?.id,
       doctorName: doctor?.name,
-      date,
-      time,
+      date: moment(date).format('DD/MM/YYYY'),
+      time: moment(time).format('hh:mm A'),
     });
     navigation.pop();
   };
@@ -56,8 +58,8 @@ const NewAppt = ({ navigation }: NativeStackScreenProps<Props>) => {
           <Select
             selectedValue={doctor?.name}
             minWidth="200"
-            accessibilityLabel="Choose Service"
-            placeholder="Choose Service"
+            accessibilityLabel="Choose Doctor"
+            placeholder="Choose Doctor"
             _selectedItem={{
               bg: 'teal.600',
               endIcon: <CheckIcon size="5" />,
@@ -74,26 +76,41 @@ const NewAppt = ({ navigation }: NativeStackScreenProps<Props>) => {
             })}
           </Select>
 
-          <RNDateTimePicker value={new Date()} onChange={() => {}} />
           <FormControl.Label>Date</FormControl.Label>
-          <Input
-            variant="underlined"
-            borderBottomColor={'gray.400'}
-            placeholder="Select date"
-            fontSize={'sm'}
-            value={date}
-            onChangeText={setDate}
-          />
+          <Pressable
+            onPress={() => {
+              DateTimePickerAndroid.open({
+                value: date,
+                onChange: val => setDate(new Date(val.nativeEvent.timestamp)),
+              });
+            }}>
+            <Input
+              variant="underlined"
+              borderBottomColor={'gray.400'}
+              placeholder="Select date"
+              fontSize={'sm'}
+              value={moment(date).format('DD/MM/YYYY')}
+              editable={false}
+            />
+          </Pressable>
 
           <FormControl.Label>Time</FormControl.Label>
-          <Input
-            variant="underlined"
-            borderBottomColor={'gray.400'}
-            placeholder="Select time"
-            fontSize={'sm'}
-            value={time}
-            onChangeText={setTime}
-          />
+          <Pressable
+            onPress={() => {
+              DateTimePickerAndroid.open({
+                value: time,
+                onChange: val => setTime(new Date(val.nativeEvent.timestamp)),
+              });
+            }}>
+            <Input
+              variant="underlined"
+              borderBottomColor={'gray.400'}
+              placeholder="Select time"
+              fontSize={'sm'}
+              value={moment(time).format('hh:mm A')}
+              editable={false}
+            />
+          </Pressable>
         </FormControl>
       </VStack>
       <Button onPress={createAppt} mt="5" variant={'solid'}>
