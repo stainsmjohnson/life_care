@@ -20,10 +20,14 @@ import {
   View,
   Pressable,
   VStack,
+  // Icon,
 } from 'native-base';
 import { HealthStatus } from './constants';
 import { getScreenContent } from './helper';
 import { Screens } from 'config/constants';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 type Props = {};
 
@@ -63,51 +67,83 @@ const Dashboard = ({ navigation }: NativeStackScreenProps<Props>) => {
   const _renderStatus = () => {
     return (
       <Box
-        bg={{
-          linearGradient: {
-            colors: content.lg,
-            start: [0, 0],
-            end: [1, 0],
-          },
-        }}
+        // bg={{
+        //   linearGradient: {
+        //     colors: content.lg,
+        //     start: [0, 0],
+        //     end: [1, 0],
+        //   },
+        // }}
+        bgColor={'#f6f5fa'}
         _text={{
           fontSize: 'md',
           fontWeight: 'medium',
-          color: 'warmGray.50',
+          // color: 'warmGray.50',
           textAlign: 'center',
         }}>
         <Heading p="3" fontSize="xl">
-          Hello {user?.name},
+          Hi {user?.name},
         </Heading>
 
-        <Row px={5}>
-          <Box flex={1} mr={3} h="100" bg={'violet.800'} rounded="25">
+        <Row px={5} mb={10}>
+          <Box flex={1} mr={3} h="120" bg={'white'} rounded="25">
             <Center flex={1}>
-              <Heading size={'sm'} color={'amber.200'}>
-                Height
+              <Box
+                bgColor={'blue.100'}
+                rounded={'lg'}
+                alignItems={'center'}
+                justifyContent={'center'}
+                width={7}
+                height={7}
+                mb={'2'}>
+                <MaterialIcons name="height" size={20} color={'blue'} />
+              </Box>
+              <Heading size={'sm'} color={'black'}>
+                190 cm
               </Heading>
-              <Text color={'amber.200'}>190 cm</Text>
+              <Text color={'black'}>Height</Text>
             </Center>
           </Box>
 
-          <Box flex={1} mr={3} h="100" bg={'violet.800'} rounded="25">
+          <Box flex={1} mr={3} h="120" bg={'white'} rounded="25">
             <Center flex={1}>
-              <Heading size={'sm'} color={'amber.200'}>
-                Weight
+              <Box
+                bgColor={'green.200'}
+                rounded={'lg'}
+                alignItems={'center'}
+                justifyContent={'center'}
+                width={7}
+                height={7}
+                mb={'2'}>
+                <Icon name="user" size={20} color={'green'} />
+              </Box>
+              <Heading size={'sm'} color={'black'}>
+                18
               </Heading>
-              <Text color={'amber.200'}>78 kg</Text>
+              <Text color={'black'}>BMI (Normal)</Text>
             </Center>
           </Box>
-          <Box flex={1} h="100" bg={'violet.800'} rounded="25">
+
+          <Box flex={1} mr={3} h="120" bg={'white'} rounded="25">
             <Center flex={1}>
-              <Heading size={'sm'} color={'amber.200'}>
-                BMI
+              <Box
+                bgColor={'blue.100'}
+                rounded={'lg'}
+                alignItems={'center'}
+                justifyContent={'center'}
+                width={7}
+                height={7}
+                mb={'2'}>
+                <Icon name="weight" size={20} color={'blue'} />
+              </Box>
+              <Heading size={'sm'} color={'black'}>
+                50 kg
               </Heading>
-              <Text color={'amber.200'}>140</Text>
+              <Text color={'black'}>Weight</Text>
             </Center>
           </Box>
         </Row>
-        <Center>
+        {/* <Center>
           <Center
             _text={{
               color: 'white',
@@ -124,7 +160,7 @@ const Dashboard = ({ navigation }: NativeStackScreenProps<Props>) => {
               {content.title}
             </Heading>
           </Center>
-        </Center>
+        </Center> */}
       </Box>
     );
   };
@@ -132,50 +168,85 @@ const Dashboard = ({ navigation }: NativeStackScreenProps<Props>) => {
   return (
     <ScrollView>
       {_renderStatus()}
-      <Box bgColor={'white'}>
+      <Box>
         <Box
           roundedTop={'2xl'}
           width={'full'}
           h="5"
           position="absolute"
           top="-20"
-          bgColor={'white'}
+          bgColor={'#f6f5fa'}
         />
         <Box px="5">
-          <Heading>Your Appointments</Heading>
+          {/* <Heading>Your Appointments</Heading> */}
           <Flex direction="row">
-            <Pressable flex={2} bg="red.100" rounded="xl" p="3">
-              <Heading size={'md'}>Today</Heading>
-              <Text>No Due</Text>
-            </Pressable>
-            <Pressable
-              flex={1}
-              bg="red.100"
-              p="3"
-              rounded="xl"
-              ml={5}
-              onPress={() => navigation.navigate(Screens.NewAppot)}>
-              <Text>New Appointment</Text>
+            <Pressable flex={2} bg="white" rounded="xl" p="3">
+              <Heading size={'sm'}>Appointments</Heading>
+              <Text textAlign={'center'} py={'3'}>
+                No Upcoming Appointments
+              </Text>
             </Pressable>
           </Flex>
-          <Flex direction="row" pt="5">
-            <Pressable flex={1.4} bg="red.100" rounded="xl" p="3">
-              <Heading size={'sm'}>Calories burnt</Heading>
-              <Text>350</Text>
-            </Pressable>
+
+          <Flex direction="row">
             <Pressable
               flex={2}
-              bg="red.100"
+              bg="white"
+              rounded="xl"
+              p="3"
+              mt={'5'}
+              onPress={() => navigation.navigate(Screens.NewAppot)}>
+              <Heading size={'sm'}>Consult Doctor</Heading>
+              <Flex
+                py={3}
+                flexDirection={'row'}
+                justifyContent={'space-between'}
+                alignItems={'center'}>
+                <Text textAlign={'left'}>
+                  Want to consult with Doctor ? Create an Appointment
+                </Text>
+                <Icon name="arrow-circle-right" size={30} color="black" />
+              </Flex>
+            </Pressable>
+          </Flex>
+
+          <Flex direction="row" pt="5">
+            <Pressable flex={2} bg="white" rounded="xl" p="3">
+              <Heading size={'sm'}>Calories burnt</Heading>
+              <Text textAlign={'center'} py={'3'}>
+                350 Calories Burnt
+              </Text>
+              <View bgColor={'amber.100'} p={2} rounded={'lg'}>
+                <Text textAlign={'center'}>
+                  <Icon name="exclamation-circle" size={15} color="black" /> You
+                  need to burn 327 more calories today
+                </Text>
+              </View>
+            </Pressable>
+            {/* <Pressable
+              flex={2}
+              bg="rgba(0,0,0,0.1)"
               p="3"
               rounded="xl"
               ml={5}
-              onPress={() => navigation.navigate(Screens.NewAppot)}>
-              <Text>You need to burn 327 more calories today</Text>
+              onPress={() => navigation.navigate(Screens.NewAppot)}></Pressable> */}
+          </Flex>
+
+          <Flex direction="row" mt={5}>
+            <Pressable flex={2} bg="white" rounded="xl" p="3">
+              <Heading size={'sm'}>BMI Status</Heading>
+              <Box
+                flex={1}
+                bg="red.100"
+                px="2"
+                pb={0}
+                rounded="xl"
+                mt={5}
+                mb={10}>
+                <YAxisExample />
+              </Box>
             </Pressable>
           </Flex>
-          <Box flex={1} bg="red.100" px="2" pb={0} rounded="xl" mt={5}>
-            <YAxisExample />
-          </Box>
         </Box>
       </Box>
     </ScrollView>

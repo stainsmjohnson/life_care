@@ -10,7 +10,7 @@ import {
 
 export default class StackedBarChartExample extends React.PureComponent {
   render() {
-    const d = [50, 10, 40, 95, 85];
+    const d = [17, 18, 16, 17, 18];
     return (
       <>
         <BarChart

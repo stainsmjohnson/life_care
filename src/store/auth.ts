@@ -75,13 +75,13 @@ const authSlice: StoreSlice<AuthState, AuthActions> = (set, get) => ({
     try {
       const user = get().user;
       const usersCollection = firestore().collection('Users');
-      await usersCollection.doc(user?.uid).set({
+      await usersCollection.doc(user?.id).set({
         name,
         email,
         isDoctor,
         hospital,
         rating,
-        id: user?.uid,
+        id: user?.id,
       });
       set({ user: { ...user, isDoctor, hospital }, initilizing: false });
     } catch (err) {
