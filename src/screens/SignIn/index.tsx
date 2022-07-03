@@ -36,7 +36,7 @@ const PressableEffect = ({ children, ...restProps }: any) => (
 
 const SignIn = ({ navigation }) => {
   const signIn = useStore(state => state.signIn);
-
+  const isFetching = useStore(state => state.isFetching);
   const [isRegisterFlow, setIsRegisterFlow] = useState(false);
 
   const login = async () => {
@@ -47,6 +47,14 @@ const SignIn = ({ navigation }) => {
       navigation.navigate(Screens.Register);
     }
   };
+
+  if (isFetching) {
+    return (
+      <View flex={1} justifyContent="center">
+        <Spinner size={'lg'} />
+      </View>
+    );
+  }
 
   return (
     <View flex={1} bgColor={'#1b2732'}>

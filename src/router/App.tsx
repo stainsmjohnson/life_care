@@ -13,19 +13,24 @@ import { Linking, useColorScheme } from 'react-native';
 
 //screens
 import Splash from '@screens/Splash';
-import useStore from 'store/index';
 import { useNotification } from 'store/notification';
 import { NativeBaseProvider } from 'native-base';
 import { nativeBaseConfig } from 'config/constants';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import useStore from 'store';
 
 const App = () => {
-  const init = useStore(state => state.init);
   const initFCM = useNotification(state => state.initFCM);
+  const signIn = useStore(state => state.signIn);
   const isDarkMode = useColorScheme() === 'dark';
 
   React.useEffect(() => {
     const removeFCM = initFCM();
-
+    AsyncStorage.getItem('USER').then(data => {
+      if (data) {
+        signIn();
+      }
+    });
     return () => {
       removeFCM();
     };
